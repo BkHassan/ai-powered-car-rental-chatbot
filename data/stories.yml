@@ -1,0 +1,29 @@
+version: "3.1"
+
+stories:
+- story: Flux d'accueil et information basique
+  steps:
+  - intent: saluer
+  - action: utter_saluer
+  - intent: demander_categories
+  - action: utter_categories
+
+- story: Processus de réservation réussi
+  steps:
+  - intent: saluer
+  - action: utter_saluer
+  - intent: reserver_voiture
+  - action: utter_demander_infos
+  - intent: fournir_infos
+  - action: utter_confirmation_recue
+  - intent: confirmer
+  - action: utter_prendre_conge
+
+- story: Demande d'informations administratives et annulation
+  steps:
+  - intent: demander_conditions
+  - action: utter_conditions
+  - intent: demander_pieces
+  - action: utter_pieces_requises
+  - intent: annuler_reservation
+  - action: utter_annulation_politique

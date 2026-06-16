@@ -1,0 +1,30 @@
+# Python virtual environment
+.venv38/
+venv/
+.venv/
+
+# Rasa generated files
+.rasa/
+models/
+
+# Python cache
+__pycache__/
+*.py[cod]
+
+# Logs
+*.log
+
+# Environment variables
+.env
+
+# IDE files
+.vscode/
+.idea/
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Test cache
+.pytest_cache/
+.coverage

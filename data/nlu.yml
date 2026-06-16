@@ -1,0 +1,65 @@
+version: "3.1"
+
+nlu:
+- intent: saluer
+  examples: |
+    - Bonjour
+    - Salam
+    - Salut
+    - Hello
+
+- intent: prendre_conge
+  examples: |
+    - Au revoir
+    - Merci, bonne journée
+    - C'est tout, merci
+    - Bye
+
+- intent: demander_categories
+  examples: |
+    - Quels sont les choix de voitures ?
+    - Vous avez quelles catégories ?
+    - Je veux voir vos voitures disponibles
+
+- intent: demander_conditions
+  examples: |
+    - Quel est l'âge minimum pour louer ?
+    - Quelles sont les conditions de location au Maroc ?
+    - Faut-il combien d'années de permis ?
+
+- intent: demander_pieces
+  examples: |
+    - Quels documents faut-il fournir ?
+    - J'ai besoin de quels papiers ?
+    - Est-ce que le passeport suffit ?
+
+- intent: demander_prix
+  examples: |
+    - Combien coûte la location par jour ?
+    - Quel est le tarif d'une voiture ?
+    - Quels sont vos prix ?
+
+- intent: reserver_voiture
+  examples: |
+    - Je veux louer une voiture
+    - Je souhaite faire une réservation
+    - Comment réserver un véhicule ?
+
+- intent: fournir_infos
+  examples: |
+    - Je veux une voiture [économique](categorie_voiture) du [15 juillet](date_debut) au [22 juillet](date_fin)
+    - Une [citadine](categorie_voiture) à partir du [10 aout](date_debut) jusqu'au [20 aout](date_fin)
+    - Je choisis [SUV](categorie_voiture) de [demain](date_debut) à [samedi prochain](date_fin)
+
+- intent: annuler_reservation
+  examples: |
+    - Je veux annuler ma réservation
+    - Comment faire pour annuler ?
+    - Annulation de réservation
+
+- intent: confirmer
+  examples: |
+    - Oui c'est correct
+    - Oui
+    - Je confirme
+    - Exactement

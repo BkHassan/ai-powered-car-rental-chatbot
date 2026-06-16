@@ -1,0 +1,64 @@
+version: "3.1"
+
+intents:
+  - saluer
+  - prendre_conge
+  - demander_categories
+  - demander_conditions
+  - demander_pieces
+  - demander_prix
+  - reserver_voiture
+  - fournir_infos
+  - annuler_reservation
+  - confirmer
+
+entities:
+  - categorie_voiture
+  - date_debut
+  - date_fin
+
+slots:
+  categorie_voiture:
+    type: text
+    influence_conversation: true
+    mappings:
+      - type: from_entity
+        entity: categorie_voiture
+  date_debut:
+    type: text
+    influence_conversation: true
+    mappings:
+      - type: from_entity
+        entity: date_debut
+  date_fin:
+    type: text
+    influence_conversation: true
+    mappings:
+      - type: from_entity
+        entity: date_fin
+
+responses:
+  utter_saluer:
+    - text: "Bonjour ! Bienvenue chez notre agence de location de voitures. Comment puis-je vous aider aujourd'hui ?"
+  utter_prendre_conge:
+    - text: "Merci de votre confiance. À bientôt et bonne route !"
+  utter_categories:
+    - text: "Nous proposons 3 catégories de véhicules au Maroc : Économique (Dacia Logan, Clio), Citadine (Hyundai i10) et SUV / Familiale."
+  utter_conditions:
+    - text: "Pour louer un véhicule, vous devez avoir au minimum 21 ans et posséder un permis de conduire valide depuis plus de 2 ans."
+  utter_pieces_requises:
+    - text: "Les pièces obligatoires sont : Votre CIN (pour les résidents) ou Passeport (pour les MRE/Touristes) et votre permis de conduire original."
+  utter_prix_info:
+    - text: "Nos tarifs varient selon la saisonnalité et la durée. Les citadines commencent à partir de 250 DH/jour en basse saison."
+  utter_demander_infos:
+    - text: "Parfait ! Pour enregistrer votre demande, veuillez m'indiquer la catégorie de voiture souhaitée, ainsi que vos dates de début et de fin."
+  utter_confirmation_recue:
+    - text: "C'est bien noté. Votre demande pour une voiture de catégorie {categorie_voiture} du {date_debut} au {date_fin} est enregistrée en attente de validation."
+  utter_annulation_politique:
+    - text: "L'annulation est gratuite jusqu'à 48 heures avant la prise en charge. L'acompte versé sera transformé en avoir."
+  utter_aide_defaut:
+    - text: "Je n'ai pas bien compris. Je peux vous renseigner sur nos tarifs, les conditions de location, les voitures disponibles ou enregistrer une réservation."
+
+session_config:
+  session_expiration_time: 60
+  carry_over_slots_to_new_session: true
