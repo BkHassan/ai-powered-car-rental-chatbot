@@ -4,9 +4,16 @@ nlu:
 - intent: saluer
   examples: |
     - Bonjour
+    - bonsoir
     - Salam
     - Salut
     - Hello
+    - Coucou
+    - Bonjour, je cherche une voiture
+    - Hey, vous allez bien ?
+    - Bien le bonjour
+    - As-salamu alaykum
+    - Bonjour, j'ai une question sur la location
 
 - intent: prendre_conge
   examples: |
@@ -14,48 +21,133 @@ nlu:
     - Merci, bonne journée
     - C'est tout, merci
     - Bye
+    - À bientôt
+    - Merci beaucoup, bonne route
+    - C'est bon pour moi, merci
+    - Je n'ai plus de questions
+    - Bonne soirée
+    - Salut, à plus
 
 - intent: demander_categories
   examples: |
     - Quels sont les choix de voitures ?
     - Vous avez quelles catégories ?
     - Je veux voir vos voitures disponibles
+    - Quels modèles proposez-vous ?
+    - Montrez-moi votre flotte
+    - Quelles sont vos catégories de véhicules ?
+    - Vous louez quels types de voitures ?
+    - J'aimerais connaître vos véhicules
+    - Liste des voitures disponibles
+    - Qu'est-ce que vous avez comme voitures ?
 
 - intent: demander_conditions
   examples: |
     - Quel est l'âge minimum pour louer ?
     - Quelles sont les conditions de location au Maroc ?
     - Faut-il combien d'années de permis ?
+    - Y a-t-il une limite d'âge ?
+    - Quelles sont vos conditions générales ?
+    - Est-ce que 20 ans suffit pour louer ?
+    - Combien de temps faut-il avoir le permis ?
+    - Conditions pour louer une voiture
+    - Ai-je besoin d'une carte bancaire ?
+    - Quelle caution demandez-vous ?
 
 - intent: demander_pieces
   examples: |
     - Quels documents faut-il fournir ?
     - J'ai besoin de quels papiers ?
     - Est-ce que le passeport suffit ?
+    - Quels papiers pour un touriste ?
+    - Faut-il la CIN ?
+    - Documents obligatoires pour la location
+    - Je suis MRE, quels documents ?
+    - Permis international accepté ?
+    - Photocopie du permis acceptée ?
+    - Pièces justificatives requises
 
 - intent: demander_prix
   examples: |
     - Combien coûte la location par jour ?
     - Quel est le tarif d'une voiture ?
     - Quels sont vos prix ?
+    - C'est combien par jour ?
+    - Prix d'une citadine ?
+    - Tarif pour un SUV une semaine
+    - Estimation du coût de location
+    - Combien pour une économique ?
+    - Quel budget prévoir ?
+    - Donnez-moi vos tarifs
+    - Je voudrais une estimation de prix pour une [citadine](categorie_voiture)
+    - Combien coûterait une [SUV](categorie_voiture) du [10 juillet](date_debut) au [17 juillet](date_fin) ?
+
+- intent: demander_disponibilite
+  examples: |
+    - Avez-vous des voitures disponibles ?
+    - Y a-t-il une citadine libre ?
+    - Vérifier la disponibilité
+    - Est-ce qu'il reste des SUV ?
+    - Disponibilité pour une économique
+    - Des véhicules libres la semaine prochaine ?
+    - Puis-je louer une voiture du [15 juillet](date_debut) au [20 juillet](date_fin) ?
+    - Y a-t-il une [citadine](categorie_voiture) disponible du [1 aout](date_debut) au [10 aout](date_fin) ?
+    - Stock disponible pour [SUV](categorie_voiture)
+    - Est-ce libre pour ces dates ?
+
+- intent: demander_aide
+  examples: |
+    - Aide
+    - Que pouvez-vous faire ?
+    - Comment ça marche ?
+    - Je ne sais pas quoi demander
+    - Menu
+    - Options disponibles
+    - Guide-moi
+    - Comment utiliser ce chatbot ?
+    - Quelles sont mes options ?
+    - Help
 
 - intent: reserver_voiture
   examples: |
     - Je veux louer une voiture
     - Je souhaite faire une réservation
     - Comment réserver un véhicule ?
+    - Je voudrais réserver
+    - Louer une voiture s'il vous plaît
+    - Faire une réservation
+    - Je veux booker une citadine
+    - Procéder à la réservation
+    - Enregistrer ma demande de location
+    - Je souhaite louer un véhicule à Casablanca
 
 - intent: fournir_infos
   examples: |
     - Je veux une voiture [économique](categorie_voiture) du [15 juillet](date_debut) au [22 juillet](date_fin)
     - Une [citadine](categorie_voiture) à partir du [10 aout](date_debut) jusqu'au [20 aout](date_fin)
     - Je choisis [SUV](categorie_voiture) de [demain](date_debut) à [samedi prochain](date_fin)
+    - [Citadine](categorie_voiture)
+    - [Économique](categorie_voiture)
+    - [SUV](categorie_voiture)
+    - Du [5 juillet](date_debut) au [12 juillet](date_fin)
+    - [15/07/2026](date_debut)
+    - [22/07/2026](date_fin)
+    - [économique](categorie_voiture) du [01/08/2026](date_debut) au [10/08/2026](date_fin)
+    - Je prends une [familiale](categorie_voiture) pour le [20 juin](date_debut) jusqu'au [30 juin](date_fin)
+    - Location [citadine](categorie_voiture) [10 septembre](date_debut) [15 septembre](date_fin)
 
 - intent: annuler_reservation
   examples: |
     - Je veux annuler ma réservation
     - Comment faire pour annuler ?
     - Annulation de réservation
+    - Annuler ma location
+    - Je confirme l'annulation
+    - Oui annulez ma réservation
+    - Je ne veux plus réserver
+    - Supprimer ma réservation
+    - Annuler le booking
+    - Politique d'annulation
 
 - intent: confirmer
   examples: |
@@ -63,3 +155,31 @@ nlu:
     - Oui
     - Je confirme
     - Exactement
+    - C'est bon
+    - Parfait, je valide
+    - OK
+    - D'accord
+    - Oui je confirme la réservation
+    - Valider
+
+- intent: nier
+  examples: |
+    - Non
+    - Ce n'est pas correct
+    - Je ne confirme pas
+    - Annuler le formulaire
+    - Non merci
+    - Ce n'est pas ça
+    - Incorrect
+    - Je veux modifier
+    - Changer les dates
+    - Pas encore
+
+- intent: bot_challenge
+  examples: |
+    - Es-tu un robot ?
+    - Tu es un humain ?
+    - C'est un bot ?
+    - Are you a bot?
+    - Qui es-tu ?
+    - Tu es une vraie personne ?

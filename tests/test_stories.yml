@@ -1,91 +1,65 @@
-#### This file contains tests to evaluate that your bot behaves as expected.
-#### If you want to learn more, please see the docs: https://rasa.com/docs/rasa/testing-your-assistant
+#### Tests end-to-end pour AutoMaroc Location
 
 stories:
-- story: happy path 1
+- story: test salutation et catégories
   steps:
   - user: |
-      hello there!
-    intent: greet
-  - action: utter_greet
+      Bonjour
+    intent: saluer
+  - action: utter_saluer
   - user: |
-      amazing
-    intent: mood_great
-  - action: utter_happy
+      Quelles catégories avez-vous ?
+    intent: demander_categories
+  - action: utter_categories
 
-- story: happy path 2
+- story: test réservation happy path
   steps:
   - user: |
-      hello there!
-    intent: greet
-  - action: utter_greet
+      Je veux louer une voiture
+    intent: reserver_voiture
+  - action: reservation_form
+  - active_loop: reservation_form
   - user: |
-      amazing
-    intent: mood_great
-  - action: utter_happy
+      Une citadine du 15 juillet au 22 juillet
+    intent: fournir_infos
+  - active_loop: reservation_form
+  - active_loop: null
+  - action: action_check_availability
+  - action: action_estimate_rental_price
+  - action: action_reservation_summary
   - user: |
-      bye-bye!
-    intent: goodbye
-  - action: utter_goodbye
+      Oui je confirme
+    intent: confirmer
+  - action: action_confirm_reservation
 
-- story: sad path 1
+- story: test demande d'aide
   steps:
   - user: |
-      hello
-    intent: greet
-  - action: utter_greet
-  - user: |
-      not good
-    intent: mood_unhappy
-  - action: utter_cheer_up
-  - action: utter_did_that_help
-  - user: |
-      yes
-    intent: affirm
-  - action: utter_happy
+      Aide
+    intent: demander_aide
+  - action: utter_demander_aide
 
-- story: sad path 2
+- story: test bot challenge
   steps:
   - user: |
-      hello
-    intent: greet
-  - action: utter_greet
-  - user: |
-      not good
-    intent: mood_unhappy
-  - action: utter_cheer_up
-  - action: utter_did_that_help
-  - user: |
-      not really
-    intent: deny
-  - action: utter_goodbye
-
-- story: sad path 3
-  steps:
-  - user: |
-      hi
-    intent: greet
-  - action: utter_greet
-  - user: |
-      very terrible
-    intent: mood_unhappy
-  - action: utter_cheer_up
-  - action: utter_did_that_help
-  - user: |
-      no
-    intent: deny
-  - action: utter_goodbye
-
-- story: say goodbye
-  steps:
-  - user: |
-      bye-bye!
-    intent: goodbye
-  - action: utter_goodbye
-
-- story: bot challenge
-  steps:
-  - user: |
-      are you a bot?
+      Es-tu un robot ?
     intent: bot_challenge
   - action: utter_iamabot
+
+- story: test conditions et pièces
+  steps:
+  - user: |
+      Quelles sont les conditions ?
+    intent: demander_conditions
+  - action: utter_conditions
+  - user: |
+      Quels documents faut-il ?
+    intent: demander_pieces
+  - action: utter_pieces_requises
+
+- story: test au revoir
+  steps:
+  - user: |
+      Merci, au revoir
+    intent: prendre_conge
+  - action: utter_prendre_conge

@@ -2,12 +2,106 @@ version: "3.1"
 
 rules:
 
-- rule: Say goodbye anytime the user says goodbye
-  steps:
-  - intent: goodbye
-  - action: utter_goodbye
+  - rule: Répondre aux salutations
+    steps:
+      - intent: saluer
+      - action: utter_saluer
 
-- rule: Say 'I am a bot' anytime the user challenges
-  steps:
-  - intent: bot_challenge
-  - action: utter_iamabot
+  - rule: Répondre aux au revoir
+    steps:
+      - intent: prendre_conge
+      - action: utter_prendre_conge
+
+  - rule: Afficher les catégories disponibles
+    steps:
+      - intent: demander_categories
+      - action: utter_categories
+
+  - rule: Expliquer les conditions d'âge et de permis
+    steps:
+      - intent: demander_conditions
+      - action: utter_conditions
+
+  - rule: Lister les pièces justificatives requises
+    steps:
+      - intent: demander_pieces
+      - action: utter_pieces_requises
+
+  - rule: Estimer le prix ou afficher les tarifs
+    steps:
+      - intent: demander_prix
+      - action: action_estimate_rental_price
+
+  - rule: Proposer l'aide structurée
+    steps:
+      - intent: demander_aide
+      - action: utter_demander_aide
+
+  - rule: Répondre au bot challenge
+    steps:
+      - intent: bot_challenge
+      - action: utter_iamabot
+
+  - rule: Activer le formulaire de réservation
+    steps:
+      - intent: reserver_voiture
+      - action: reservation_form
+      - active_loop: reservation_form
+
+  - rule: Soumettre le formulaire quand les slots sont remplis
+    condition:
+      - active_loop: reservation_form
+    steps:
+      - action: reservation_form
+      - active_loop: null
+      - action: action_check_availability
+      - action: action_estimate_rental_price
+      - action: action_reservation_summary
+
+  - rule: Confirmer la réservation après récapitulatif
+    condition:
+      - active_loop: null
+      - slot_was_set:
+          - categorie_voiture
+          - date_debut
+          - date_fin
+    steps:
+      - intent: confirmer
+      - action: action_confirm_reservation
+
+  - rule: Annuler le formulaire en cours
+    condition:
+      - active_loop: reservation_form
+    steps:
+      - intent: nier
+      - action: action_reset_reservation_form
+      - action: utter_reservation_annulee_par_utilisateur
+      - active_loop: null
+
+  - rule: Vérifier la disponibilité
+    steps:
+      - intent: demander_disponibilite
+      - action: action_check_availability
+
+  - rule: Annuler une réservation confirmée
+    condition:
+      - slot_was_set:
+          - reservation_status: confirmed
+    steps:
+      - intent: annuler_reservation
+      - action: action_confirm_cancellation
+
+  - rule: Expliquer la politique d'annulation
+    steps:
+      - intent: annuler_reservation
+      - action: utter_annulation_politique
+
+  - rule: Gestion NLU fallback
+    steps:
+      - intent: nlu_fallback
+      - action: action_default_fallback
+
+  - rule: Gestion Core fallback
+    steps:
+      - intent: out_of_scope
+      - action: action_default_fallback

@@ -7,10 +7,14 @@ intents:
   - demander_conditions
   - demander_pieces
   - demander_prix
+  - demander_disponibilite
+  - demander_aide
   - reserver_voiture
   - fournir_infos
   - annuler_reservation
   - confirmer
+  - nier
+  - bot_challenge
 
 entities:
   - categorie_voiture
@@ -24,40 +28,185 @@ slots:
     mappings:
       - type: from_entity
         entity: categorie_voiture
+      - type: from_text
+        conditions:
+          - active_loop: reservation_form
+            requested_slot: categorie_voiture
   date_debut:
     type: text
     influence_conversation: true
     mappings:
       - type: from_entity
         entity: date_debut
+      - type: from_text
+        conditions:
+          - active_loop: reservation_form
+            requested_slot: date_debut
   date_fin:
     type: text
     influence_conversation: true
     mappings:
       - type: from_entity
         entity: date_fin
+      - type: from_text
+        conditions:
+          - active_loop: reservation_form
+            requested_slot: date_fin
+  reservation_id:
+    type: text
+    influence_conversation: false
+    mappings:
+      - type: custom
+  reservation_status:
+    type: categorical
+    values:
+      - pending
+      - confirmed
+      - cancelled
+    influence_conversation: true
+    mappings:
+      - type: custom
+  prix_estime:
+    type: text
+    influence_conversation: false
+    mappings:
+      - type: custom
+  disponibilite:
+    type: text
+    influence_conversation: false
+    mappings:
+      - type: custom
+  fallback_count:
+    type: float
+    initial_value: 0
+    influence_conversation: false
+    mappings:
+      - type: custom
+
+forms:
+  reservation_form:
+    required_slots:
+      - categorie_voiture
+      - date_debut
+      - date_fin
+    ignored_intents:
+      - saluer
+      - prendre_conge
+      - demander_aide
+      - bot_challenge
 
 responses:
   utter_saluer:
-    - text: "Bonjour ! Bienvenue chez notre agence de location de voitures. Comment puis-je vous aider aujourd'hui ?"
+    - text: "Bonjour ! Bienvenue chez AutoMaroc Location. Je suis votre assistant virtuel — je peux vous renseigner sur nos véhicules, tarifs et disponibilités, ou enregistrer une réservation. Que souhaitez-vous faire ?"
+
   utter_prendre_conge:
-    - text: "Merci de votre confiance. À bientôt et bonne route !"
+    - text: "Merci de votre confiance ! Bon voyage et à très bientôt chez AutoMaroc Location."
+
   utter_categories:
-    - text: "Nous proposons 3 catégories de véhicules au Maroc : Économique (Dacia Logan, Clio), Citadine (Hyundai i10) et SUV / Familiale."
+    - text: "Nous proposons 3 catégories au Maroc :\n• **Économique** — Dacia Logan, Renault Clio (~200 DH/jour)\n• **Citadine** — Hyundai i10, Peugeot 208 (~250 DH/jour)\n• **SUV / Familiale** — Dacia Duster, Toyota RAV4 (~450 DH/jour)\n\nSouhaitez-vous vérifier la disponibilité ou lancer une réservation ?"
+
   utter_conditions:
-    - text: "Pour louer un véhicule, vous devez avoir au minimum 21 ans et posséder un permis de conduire valide depuis plus de 2 ans."
+    - text: "Conditions de location :\n• Âge minimum : **21 ans**\n• Permis valide depuis **2 ans** minimum\n• Caution selon catégorie (carte bancaire obligatoire)\n• Kilométrage : 200 km/jour inclus, puis 2 DH/km supplémentaire"
+
   utter_pieces_requises:
-    - text: "Les pièces obligatoires sont : Votre CIN (pour les résidents) ou Passeport (pour les MRE/Touristes) et votre permis de conduire original."
+    - text: "Documents requis à la prise en charge :\n• **CIN** (résidents marocains) ou **passeport** (MRE / touristes)\n• Permis de conduire **original** (pas de photocopie)\n• Carte bancaire au nom du conducteur principal"
+
   utter_prix_info:
-    - text: "Nos tarifs varient selon la saisonnalité et la durée. Les citadines commencent à partir de 250 DH/jour en basse saison."
+    - text: "Nos tarifs dépendent de la catégorie, de la saison et de la durée. Indiquez-moi une catégorie et vos dates pour une estimation précise, ou demandez « estimer le prix » pendant une réservation."
+
   utter_demander_infos:
-    - text: "Parfait ! Pour enregistrer votre demande, veuillez m'indiquer la catégorie de voiture souhaitée, ainsi que vos dates de début et de fin."
+    - text: "Parfait, je m'occupe de votre réservation. Je vais vous poser quelques questions — vous pouvez aussi tout donner d'un coup (catégorie + dates)."
+
+  utter_ask_categorie_voiture:
+    - text: "Quelle catégorie souhaitez-vous ? Économique, Citadine ou SUV / Familiale ?"
+
+  utter_ask_date_debut:
+    - text: "À partir de quelle date souhaitez-vous récupérer le véhicule ? (ex. 15 juillet ou 15/07/2026)"
+
+  utter_ask_date_fin:
+    - text: "Jusqu'à quelle date aurez-vous besoin du véhicule ? (ex. 22 juillet ou 22/07/2026)"
+
+  utter_slot_categorie_invalide:
+    - text: "Je n'ai pas reconnu cette catégorie. Choisissez parmi : **Économique**, **Citadine** ou **SUV / Familiale**."
+
+  utter_slot_date_invalide:
+    - text: "Je n'ai pas compris cette date. Utilisez par exemple « 15 juillet » ou « 15/07/2026 »."
+
+  utter_slot_date_passee:
+    - text: "La date de début doit être aujourd'hui ou dans le futur. Pouvez-vous indiquer une autre date ?"
+
+  utter_slot_date_fin_invalide:
+    - text: "La date de fin doit être **après** la date de début. Pouvez-vous corriger ?"
+
+  utter_demander_categorie_pour_prix:
+    - text: "Pour estimer le prix, indiquez d'abord une catégorie (Économique, Citadine ou SUV)."
+
+  utter_demander_categorie_pour_dispo:
+    - text: "Pour vérifier la disponibilité, précisez la catégorie souhaitée (et vos dates si possible)."
+
+  utter_estimation_prix_base:
+    - text: "Tarif indicatif pour une **{categorie_voiture}** : environ **{tarif_journalier} DH/jour** (hors saison haute). Donnez vos dates pour un total exact."
+
+  utter_estimation_prix_detail:
+    - text: "Estimation pour **{categorie_voiture}** du {date_debut} au {date_fin} :\n• Durée : {jours} jour(s)\n• Tarif journalier : {tarif_journalier} DH\n• **Total estimé : {total} DH** (TVA incluse, assurance basique incluse)"
+
+  utter_disponibilite_ok:
+    - text: "Bonne nouvelle ! **{available}** véhicule(s) **{category}** disponible(s) du {date_debut} au {date_fin}. Souhaitez-vous réserver ?"
+
+  utter_disponibilite_limitee:
+    - text: "Stock limité : seulement **{available}** **{category}** disponible(s) du {date_debut} au {date_fin}. Je vous conseille de réserver rapidement."
+
+  utter_disponibilite_indisponible:
+    - text: "Désolé, aucun **{category}** n'est disponible du {date_debut} au {date_fin}. Essayez d'autres dates ou une autre catégorie."
+
+  utter_resume_incomplet:
+    - text: "Il me manque des informations pour le récapitulatif. Complétons d'abord catégorie et dates."
+
+  utter_resume_reservation:
+    - text: "Voici le récapitulatif de votre demande :\n• Catégorie : **{categorie_voiture}**\n• Du **{date_debut}** au **{date_fin}**\n• Total estimé : **{prix_estime} DH**\n\nConfirmez-vous cette réservation ? (oui / non)"
+
+  utter_reservation_confirmee:
+    - text: "Réservation confirmée !\n• Référence : **{reservation_id}**\n• {categorie_voiture} du {date_debut} au {date_fin}\n\nPrésentez-vous à l'agence avec vos documents. Annulation gratuite jusqu'à 48 h avant la prise en charge."
+
   utter_confirmation_recue:
-    - text: "C'est bien noté. Votre demande pour une voiture de catégorie {categorie_voiture} du {date_debut} au {date_fin} est enregistrée en attente de validation."
+    - text: "C'est bien noté. Votre demande pour une **{categorie_voiture}** du {date_debut} au {date_fin} est enregistrée."
+
   utter_annulation_politique:
-    - text: "L'annulation est gratuite jusqu'à 48 heures avant la prise en charge. L'acompte versé sera transformé en avoir."
+    - text: "Politique d'annulation :\n• **Gratuite** jusqu'à 48 h avant la prise en charge\n• Acompte transformé en avoir en cas d'annulation tardive\n• Aucun remboursement en cash sur place\n\nSouhaitez-vous annuler une réservation existante ?"
+
+  utter_annulation_confirmee:
+    - text: "Votre réservation **{reservation_id}** a bien été annulée. L'acompte sera converti en avoir utilisable sur votre prochaine location."
+
+  utter_annulation_sans_reservation:
+    - text: "Je ne trouve pas de réservation active dans cette conversation. Si vous avez un numéro de référence, contactez notre agence au +212 5XX-XXXXXX."
+
   utter_aide_defaut:
-    - text: "Je n'ai pas bien compris. Je peux vous renseigner sur nos tarifs, les conditions de location, les voitures disponibles ou enregistrer une réservation."
+    - text: "Je peux vous aider avec :\n• **Catégories** et tarifs\n• **Conditions** et documents\n• **Disponibilité** et estimation de prix\n• **Réservation** ou **annulation**\n\nQue souhaitez-vous faire ?"
+
+  utter_fallback_rephrase:
+    - text: "Je n'ai pas bien saisi. Pouvez-vous reformuler ? Par exemple : « Je veux louer une citadine du 10 au 20 juillet »."
+
+  utter_demander_aide:
+    - text: "Voici ce que je peux faire :\n1. Présenter nos véhicules et tarifs\n2. Vérifier la disponibilité\n3. Enregistrer une réservation\n4. Expliquer les conditions et l'annulation\n\nDites simplement ce dont vous avez besoin."
+
+  utter_iamabot:
+    - text: "Je suis l'assistant virtuel d'AutoMaroc Location, propulsé par Rasa. Je peux vous guider pour la location de véhicules au Maroc."
+
+  utter_reservation_annulee_par_utilisateur:
+    - text: "Pas de souci, j'annule la procédure en cours. Dites-moi si vous souhaitez recommencer ou poser une autre question."
+
+  utter_reformuler_reservation:
+    - text: "D'accord. Indiquez les nouvelles informations (catégorie et/ou dates) et je mets à jour votre demande."
+
+actions:
+  - validate_reservation_form
+  - action_check_availability
+  - action_estimate_rental_price
+  - action_reservation_summary
+  - action_confirm_reservation
+  - action_confirm_cancellation
+  - action_reset_reservation_form
+  - action_default_fallback
 
 session_config:
   session_expiration_time: 60

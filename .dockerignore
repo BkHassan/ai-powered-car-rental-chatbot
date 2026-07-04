@@ -1,0 +1,17 @@
+.git
+.venv
+.venv38
+venv
+__pycache__
+*.pyc
+.rasa
+models
+logs
+*.log
+.env
+.vscode
+.idea
+results
+conversations.db
+*.md
+!README.md

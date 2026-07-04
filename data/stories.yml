@@ -1,29 +1,119 @@
 version: "3.1"
 
 stories:
-- story: Flux d'accueil et information basique
+- story: Accueil puis exploration des catégories
   steps:
   - intent: saluer
   - action: utter_saluer
   - intent: demander_categories
   - action: utter_categories
 
-- story: Processus de réservation réussi
+- story: Réservation complète avec formulaire et confirmation
   steps:
   - intent: saluer
   - action: utter_saluer
   - intent: reserver_voiture
-  - action: utter_demander_infos
-  - intent: fournir_infos
-  - action: utter_confirmation_recue
+  - action: reservation_form
+  - active_loop: reservation_form
+  - active_loop: null
+  - action: action_check_availability
+  - action: action_estimate_rental_price
+  - action: action_reservation_summary
   - intent: confirmer
+  - action: action_confirm_reservation
+  - intent: prendre_conge
   - action: utter_prendre_conge
 
-- story: Demande d'informations administratives et annulation
+- story: Réservation avec infos fournies en une fois
+  steps:
+  - intent: reserver_voiture
+  - action: reservation_form
+  - active_loop: reservation_form
+  - intent: fournir_infos
+  - active_loop: reservation_form
+  - active_loop: null
+  - action: action_check_availability
+  - action: action_estimate_rental_price
+  - action: action_reservation_summary
+  - intent: confirmer
+  - action: action_confirm_reservation
+
+- story: Vérification disponibilité puis réservation
+  steps:
+  - intent: demander_disponibilite
+  - action: utter_demander_categorie_pour_dispo
+  - intent: fournir_infos
+  - action: action_check_availability
+  - intent: reserver_voiture
+  - action: reservation_form
+  - active_loop: reservation_form
+  - active_loop: null
+  - action: action_reservation_summary
+  - intent: confirmer
+  - action: action_confirm_reservation
+
+- story: Estimation de prix avec dates
+  steps:
+  - intent: demander_prix
+  - action: utter_prix_info
+  - intent: fournir_infos
+  - action: action_estimate_rental_price
+
+- story: Informations administratives
   steps:
   - intent: demander_conditions
   - action: utter_conditions
   - intent: demander_pieces
   - action: utter_pieces_requises
+
+- story: Annulation après réservation confirmée
+  steps:
+  - intent: reserver_voiture
+  - action: reservation_form
+  - active_loop: reservation_form
+  - intent: fournir_infos
+  - active_loop: reservation_form
+  - active_loop: null
+  - action: action_confirm_reservation
   - intent: annuler_reservation
-  - action: utter_annulation_politique
+  - action: action_confirm_cancellation
+
+- story: Refus de confirmation puis reformulation
+  steps:
+  - intent: reserver_voiture
+  - action: reservation_form
+  - active_loop: reservation_form
+  - intent: fournir_infos
+  - active_loop: reservation_form
+  - active_loop: null
+  - action: action_reservation_summary
+  - intent: nier
+  - action: utter_reformuler_reservation
+  - intent: fournir_infos
+  - action: action_reservation_summary
+  - intent: confirmer
+  - action: action_confirm_reservation
+
+- story: Abandon du formulaire de réservation
+  steps:
+  - intent: reserver_voiture
+  - action: reservation_form
+  - active_loop: reservation_form
+  - intent: nier
+  - action: action_reset_reservation_form
+  - action: utter_reservation_annulee_par_utilisateur
+
+- story: Demande d'aide
+  steps:
+  - intent: demander_aide
+  - action: utter_demander_aide
+  - intent: reserver_voiture
+  - action: reservation_form
+  - active_loop: reservation_form
+
+- story: Bot challenge
+  steps:
+  - intent: bot_challenge
+  - action: utter_iamabot
+  - intent: demander_categories
+  - action: utter_categories
