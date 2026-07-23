@@ -1,0 +1,8 @@
+models/
+logs/
+.rasa/
+__pycache__/
+*.py[cod]
+*.log
+.pytest_cache/
+.coverage

@@ -71,8 +71,8 @@ flowchart TB
 Build and push from CI/CD:
 
 ```bash
-az acr build --registry automarocacr --image rasa-server:latest -f Dockerfile .
-az acr build --registry automarocacr --image rasa-actions:latest -f Dockerfile.actions .
+az acr build --registry automarocacr --image rasa-server:latest -f rasa/Dockerfile rasa
+az acr build --registry automarocacr --image rasa-actions:latest -f actions/Dockerfile actions
 ```
 
 **Recommendation:** Train models in CI (GitHub Actions / Azure DevOps), upload to Blob Storage, and mount or download at container startup instead of baking models into every image rebuild.

@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>AutoMaroc Assistant</title>
+</head>
+
+<body>
+
+<script src="https://cdn.jsdelivr.net/npm/rasa-webchat@1.0.1/lib/index.js"></script>
+
+<script>
+window.WebChat.default(
+{
+    socketUrl: "http://localhost:5005",
+    socketPath: "/socket.io/",
+
+    title: "AutoMaroc Assistant",
+    subtitle: "Location de véhicules au Maroc",
+
+    profileAvatar: "./logo.png",
+    openLauncherImage: "https://cdn-icons-png.flaticon.com/512/744/744465.png",
+
+    primaryColor: "#0D6EFD",
+    hideWhenNotConnected: false,
+    displayUnreadCount: true,
+
+    params: {
+        storage: "session"
+    }
+
+}, null);
+</script>
+
+</body>
+</html>

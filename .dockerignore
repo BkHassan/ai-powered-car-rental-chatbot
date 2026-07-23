@@ -13,5 +13,3 @@ logs
 .idea
 results
 conversations.db
-*.md
-!README.md

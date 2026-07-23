@@ -30,7 +30,7 @@ rules:
   - rule: Estimer le prix ou afficher les tarifs
     steps:
       - intent: demander_prix
-      - action: action_estimate_rental_price
+      - action: utter_prix_info
 
   - rule: Proposer l'aide structurée
     steps:
@@ -78,10 +78,16 @@ rules:
       - action: utter_reservation_annulee_par_utilisateur
       - active_loop: null
 
+  - rule: Stop form if user asks conditions
+  - rule: Stop form if user asks categories
+  - rule: Stop form if user asks price
+  - rule: Stop form if user asks help
+  - rule: Stop form if user asks cancellation
+
   - rule: Vérifier la disponibilité
     steps:
       - intent: demander_disponibilite
-      - action: action_check_availability
+      - action: utter_demander_categorie_pour_dispo
 
   - rule: Annuler une réservation confirmée
     condition:
@@ -90,11 +96,6 @@ rules:
     steps:
       - intent: annuler_reservation
       - action: action_confirm_cancellation
-
-  - rule: Expliquer la politique d'annulation
-    steps:
-      - intent: annuler_reservation
-      - action: utter_annulation_politique
 
   - rule: Gestion NLU fallback
     steps:

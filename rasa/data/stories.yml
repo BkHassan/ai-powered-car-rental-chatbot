@@ -43,11 +43,12 @@ stories:
   - intent: demander_disponibilite
   - action: utter_demander_categorie_pour_dispo
   - intent: fournir_infos
-  - action: action_check_availability
   - intent: reserver_voiture
   - action: reservation_form
   - active_loop: reservation_form
   - active_loop: null
+  - action: action_check_availability
+  - action: action_estimate_rental_price
   - action: action_reservation_summary
   - intent: confirmer
   - action: action_confirm_reservation

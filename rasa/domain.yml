@@ -97,13 +97,75 @@ forms:
 
 responses:
   utter_saluer:
-    - text: "Bonjour ! Bienvenue chez AutoMaroc Location. Je suis votre assistant virtuel — je peux vous renseigner sur nos véhicules, tarifs et disponibilités, ou enregistrer une réservation. Que souhaitez-vous faire ?"
+    - text: |
+        👋 Bonjour et bienvenue chez **AutoMaroc Location**.
+
+        Je suis votre assistant virtuel et je peux vous accompagner tout au long de votre réservation.
+
+        Je peux notamment :
+
+        🚗 Vous présenter nos véhicules
+
+        💰 Estimer le prix d'une location
+
+        📅 Réserver une voiture
+
+        📄 Expliquer les conditions de location
+
+        Que souhaitez-vous faire ?
+
+      buttons:
+        - title: "🚗 Voir les véhicules"
+          payload: "/demander_categories"
+
+        - title: "💰 Consulter les tarifs"
+          payload: "/demander_prix"
+
+        - title: "📅 Réserver"
+          payload: "/reserver_voiture"
+
+        - title: "📄 Conditions"
+          payload: "/demander_conditions"
 
   utter_prendre_conge:
     - text: "Merci de votre confiance ! Bon voyage et à très bientôt chez AutoMaroc Location."
 
   utter_categories:
-    - text: "Nous proposons 3 catégories au Maroc :\n• **Économique** — Dacia Logan, Renault Clio (~200 DH/jour)\n• **Citadine** — Hyundai i10, Peugeot 208 (~250 DH/jour)\n• **SUV / Familiale** — Dacia Duster, Toyota RAV4 (~450 DH/jour)\n\nSouhaitez-vous vérifier la disponibilité ou lancer une réservation ?"
+    - text: |
+        🚗 Économique
+
+        Dacia Logan
+
+        200 DH / jour
+      image: "/images/dacia_logan.jpg"
+
+      buttons:
+        - title: "Réserver"
+          payload: "/reserver_voiture"
+
+    - text: |
+        🚙 Citadine
+
+        Hyundai i10
+
+        250 DH / jour
+      image: "/images/citadine.jpg"
+
+      buttons:
+        - title: "Réserver"
+          payload: "/reserver_voiture"
+
+    - text: |
+        🚘 SUV
+
+        Toyota RAV4
+
+        450 DH / jour
+      image: "/images/suv.jpg"
+
+      buttons:
+        - title: "Réserver"
+          payload: "/reserver_voiture"
 
   utter_conditions:
     - text: "Conditions de location :\n• Âge minimum : **21 ans**\n• Permis valide depuis **2 ans** minimum\n• Caution selon catégorie (carte bancaire obligatoire)\n• Kilométrage : 200 km/jour inclus, puis 2 DH/km supplémentaire"
@@ -112,16 +174,60 @@ responses:
     - text: "Documents requis à la prise en charge :\n• **CIN** (résidents marocains) ou **passeport** (MRE / touristes)\n• Permis de conduire **original** (pas de photocopie)\n• Carte bancaire au nom du conducteur principal"
 
   utter_prix_info:
-    - text: "Nos tarifs dépendent de la catégorie, de la saison et de la durée. Indiquez-moi une catégorie et vos dates pour une estimation précise, ou demandez « estimer le prix » pendant une réservation."
+    - text: |
+        💰 Tarifs indicatifs
+
+        🚗 Économique : 200 DH/jour
+
+        🚙 Citadine : 250 DH/jour
+
+        🚘 SUV / Familiale : 450 DH/jour
+
+        Pour obtenir un prix exact, indiquez vos dates de location.
 
   utter_demander_infos:
-    - text: "Parfait, je m'occupe de votre réservation. Je vais vous poser quelques questions — vous pouvez aussi tout donner d'un coup (catégorie + dates)."
+    - text: |
+        Parfait 😊
+
+        Je vais recueillir les informations nécessaires pour préparer votre réservation.
+
+        Vous pouvez répondre étape par étape ou bien me donner directement :
+
+        • la catégorie
+
+        • la date de début
+
+        • la date de fin
 
   utter_ask_categorie_voiture:
-    - text: "Quelle catégorie souhaitez-vous ? Économique, Citadine ou SUV / Familiale ?"
+    - text: |
+        😊 Très bien !
+
+        Quel type de véhicule recherchez-vous ?
+
+      buttons:
+        - title: "🚗 Économique"
+          payload: '/fournir_infos{"categorie_voiture":"Économique"}'
+
+        - title: "🚙 Citadine"
+          payload: '/fournir_infos{"categorie_voiture":"Citadine"}'
+
+        - title: "🚘 SUV"
+          payload: '/fournir_infos{"categorie_voiture":"SUV / Familiale"}'
 
   utter_ask_date_debut:
-    - text: "À partir de quelle date souhaitez-vous récupérer le véhicule ? (ex. 15 juillet ou 15/07/2026)"
+    - text: |
+        Très bien 👍
+
+        À quelle date souhaitez-vous récupérer le véhicule ?
+
+        Exemple :
+
+        • 15 juillet
+
+        • 15/07/2026
+
+        • demain
 
   utter_ask_date_fin:
     - text: "Jusqu'à quelle date aurez-vous besoin du véhicule ? (ex. 22 juillet ou 22/07/2026)"
@@ -148,10 +254,32 @@ responses:
     - text: "Tarif indicatif pour une **{categorie_voiture}** : environ **{tarif_journalier} DH/jour** (hors saison haute). Donnez vos dates pour un total exact."
 
   utter_estimation_prix_detail:
-    - text: "Estimation pour **{categorie_voiture}** du {date_debut} au {date_fin} :\n• Durée : {jours} jour(s)\n• Tarif journalier : {tarif_journalier} DH\n• **Total estimé : {total} DH** (TVA incluse, assurance basique incluse)"
+    - text: |
+        💰 Voici l'estimation de votre location.
+
+        🚗 Catégorie : {categorie_voiture}
+
+        📅 Du {date_debut}
+
+        📅 Au {date_fin}
+
+        ⏳ Durée : {jours} jour(s)
+
+        💵 Tarif journalier : {tarif_journalier} DH
+
+        ✅ Total estimé : **{total} DH**
+
+        (Assurance de base incluse.)
 
   utter_disponibilite_ok:
-    - text: "Bonne nouvelle ! **{available}** véhicule(s) **{category}** disponible(s) du {date_debut} au {date_fin}. Souhaitez-vous réserver ?"
+    - text: |
+        Excellente nouvelle ✅
+
+        Nous avons actuellement **{available} véhicule(s)** disponibles dans la catégorie **{category}**.
+
+        Les dates demandées ({date_debut} → {date_fin}) sont donc disponibles.
+
+        Je peux maintenant préparer votre réservation.
 
   utter_disponibilite_limitee:
     - text: "Stock limité : seulement **{available}** **{category}** disponible(s) du {date_debut} au {date_fin}. Je vous conseille de réserver rapidement."
@@ -160,13 +288,37 @@ responses:
     - text: "Désolé, aucun **{category}** n'est disponible du {date_debut} au {date_fin}. Essayez d'autres dates ou une autre catégorie."
 
   utter_resume_incomplet:
-    - text: "Il me manque des informations pour le récapitulatif. Complétons d'abord catégorie et dates."
+    - text: "Il me manque des informations pour le récapitulatif. C omplétons d'abord catégorie et dates."
 
   utter_resume_reservation:
-    - text: "Voici le récapitulatif de votre demande :\n• Catégorie : **{categorie_voiture}**\n• Du **{date_debut}** au **{date_fin}**\n• Total estimé : **{prix_estime} DH**\n\nConfirmez-vous cette réservation ? (oui / non)"
+    - text: |
+        📋 Récapitulatif
+
+        🚗 Catégorie : {categorie_voiture}
+
+        📅 Début : {date_debut}
+
+        📅 Fin : {date_fin}
+
+        💰 Prix estimé : **{prix_estime} DH**
+
+        Souhaitez-vous confirmer cette réservation ?
 
   utter_reservation_confirmee:
-    - text: "Réservation confirmée !\n• Référence : **{reservation_id}**\n• {categorie_voiture} du {date_debut} au {date_fin}\n\nPrésentez-vous à l'agence avec vos documents. Annulation gratuite jusqu'à 48 h avant la prise en charge."
+    - text: |
+        ✅ Réservation confirmée !
+
+        📄 Référence : {reservation_id}
+
+        🚗 Véhicule : {categorie_voiture}
+
+        📅 Du {date_debut}
+
+        📅 Au {date_fin}
+
+        Merci d'avoir choisi AutoMaroc.
+
+        Nous vous souhaitons un excellent voyage 🚗
 
   utter_confirmation_recue:
     - text: "C'est bien noté. Votre demande pour une **{categorie_voiture}** du {date_debut} au {date_fin} est enregistrée."
@@ -181,13 +333,63 @@ responses:
     - text: "Je ne trouve pas de réservation active dans cette conversation. Si vous avez un numéro de référence, contactez notre agence au +212 5XX-XXXXXX."
 
   utter_aide_defaut:
-    - text: "Je peux vous aider avec :\n• **Catégories** et tarifs\n• **Conditions** et documents\n• **Disponibilité** et estimation de prix\n• **Réservation** ou **annulation**\n\nQue souhaitez-vous faire ?"
+    - text: |
+        Je peux vous aider à :
+
+        🚗 Consulter les véhicules
+
+        💰 Obtenir une estimation de prix
+
+        📅 Réserver une voiture
+
+        📄 Consulter les conditions
+
+        ❌ Annuler une réservation
+
+        Dites-moi simplement ce que vous souhaitez faire.
 
   utter_fallback_rephrase:
-    - text: "Je n'ai pas bien saisi. Pouvez-vous reformuler ? Par exemple : « Je veux louer une citadine du 10 au 20 juillet »."
+    - text: |
+        Je ne suis pas certain d'avoir bien compris.
+
+        Pouvez-vous reformuler votre demande ?
+
+        Par exemple :
+
+        • Je veux louer une citadine
+
+        • Quels sont vos tarifs ?
+
+        • Je souhaite réserver un SUV du 10 au 15 juillet
 
   utter_demander_aide:
-    - text: "Voici ce que je peux faire :\n1. Présenter nos véhicules et tarifs\n2. Vérifier la disponibilité\n3. Enregistrer une réservation\n4. Expliquer les conditions et l'annulation\n\nDites simplement ce dont vous avez besoin."
+    - text: |
+        😊 Je peux vous accompagner pour :
+
+        🚗 Découvrir nos véhicules
+
+        💰 Consulter les tarifs
+
+        📅 Réserver une voiture
+
+        📄 Conditions de location
+
+        ❌ Annuler une réservation
+
+        Que souhaitez-vous faire ?
+
+      buttons:
+        - title: "🚗 Véhicules"
+          payload: "/demander_categories"
+
+        - title: "📅 Réserver"
+          payload: "/reserver_voiture"
+
+        - title: "💰 Tarifs"
+          payload: "/demander_prix"
+
+        - title: "📄 Conditions"
+          payload: "/demander_conditions"
 
   utter_iamabot:
     - text: "Je suis l'assistant virtuel d'AutoMaroc Location, propulsé par Rasa. Je peux vous guider pour la location de véhicules au Maroc."

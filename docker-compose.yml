@@ -1,19 +1,15 @@
 services:
   rasa:
     build:
-      context: .
+      context: ./rasa
       dockerfile: Dockerfile
     container_name: automaroc-rasa
     ports:
       - "5005:5005"
-    volumes:
-      - ./models:/app/models
-      - ./logs:/app/logs
+    command: ["run", "--enable-api", "--cors", "*", "--credentials", "credentials.yml"]
     environment:
       - RASA_TELEMETRY_ENABLED=false
     depends_on:
-      redis:
-        condition: service_healthy
       action-server:
         condition: service_healthy
     healthcheck:
@@ -28,13 +24,11 @@ services:
 
   action-server:
     build:
-      context: .
-      dockerfile: Dockerfile.actions
+      context: ./actions
+      dockerfile: Dockerfile
     container_name: automaroc-actions
     ports:
       - "5055:5055"
-    volumes:
-      - ./actions:/app/actions
     environment:
       - RASA_TELEMETRY_ENABLED=false
     healthcheck:
@@ -44,41 +38,20 @@ services:
       retries: 5
       start_period: 20s
     networks:
-    image: redis:7-alpine
-    container_name: automaroc-redis
+      - chatbot-net
+    restart: unless-stopped
+  
+  web:
+    image: nginx:alpine
+    container_name: automaroc-frontend
     ports:
-      - "6379:6379"
+      - "80:80"
     volumes:
-      - redis-data:/data
-    command: redis-server --appendonly yes --maxmemory 256mb --maxmemory-policy allkeys-lru
-    healthcheck:
-      test: ["CMD", "redis-cli", "ping"]
-      interval: 10s
-      timeout: 5s
-      retries: 5
+      - ./frontend:/usr/share/nginx/html
     networks:
       - chatbot-net
     restart: unless-stopped
-
-  # Optional: nginx reverse proxy for TLS termination and rate limiting
-  nginx:
-    image: nginx:1.25-alpine
-    container_name: automaroc-nginx
-    ports:
-      - "8080:80"
-    volumes:
-      - ./nginx.conf:/etc/nginx/nginx.conf:ro
-    depends_on:
-      - rasa
-    networks:
-      - chatbot-net
-    profiles:
-      - with-proxy
-    restart: unless-stopped
-
+    
 networks:
   chatbot-net:
     driver: bridge
-
-volumes:
-  redis-data:
